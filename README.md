@@ -1,9 +1,11 @@
 # querycoder
 Configurable Ad Hoc SQL Query Generator
 
+https://tconwell.github.io/querycoder/
+
 How to Use:
 
-1. Open the querycoder.html file in a browser.
+1. Open the querycoder.html file or go to https://tconwell.github.io/querycoder/ in a browser.
 
 2. Download a blank config file.
 
