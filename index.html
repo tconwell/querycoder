@@ -247,10 +247,11 @@
 			
 			function createDeleteButton(id) {
 			  var buttonDiv = document.createElement('div');
-			  buttonDiv.className = 'float-end';
+			  buttonDiv.className = 'd-grid gap-2';
 			  var button = document.createElement('button');
 			  button.type = 'button';
-			  button.className = 'btn btn-close';
+			  button.className = 'btn btn-danger';
+			  button.textContent = 'X';
 			  (function(index) {
 			    button.onclick = function () {
 			    deleteId(index);
@@ -280,7 +281,7 @@
 			  divElement.appendChild(inputElement);
 			  
 			  var col1 = document.createElement('div');
-			  col1.className = 'col-5 p-1';
+			  col1.className = 'col-4 p-1';
 			  col1.appendChild(createButtonDiv(select_as));
 			
 			  var col2 = document.createElement('div');
@@ -288,7 +289,7 @@
 			  col2.appendChild(createButtonDiv('AS'));
 			
 			  var col3 = document.createElement('div');
-			  col3.className = 'col-5 p-1';
+			  col3.className = 'col-4 p-1';
 			  
 			  var inputElement = document.createElement('input');
 			  inputElement.id = 'select_as-' + i + '-' + ts;
@@ -300,14 +301,34 @@
 			  col3.appendChild(inputElement);
 			  
 			  var col4 = document.createElement('div');
-			  col4.className = 'col-1 p-1';
-			  col4.appendChild(createDeleteButton('field-' + i + '-' + ts));
+			  col4.className = 'col-2 p-1';
+			  
+			  var orderByElement = document.createElement('div');
+			  orderByElement.className = 'form-check d-grid gap-2';
+			  var orderByInput = document.createElement('input');
+			  orderByInput.id = 'order_by-' + i + '-' + ts;
+			  orderByInput.name = 'order_by-' + i + '-' + ts;
+			  orderByInput.type = 'checkbox';
+			  orderByInput.autocomplete = "off";
+			  orderByInput.className = 'btn-check';
+			  orderByElement.appendChild(orderByInput);
+			  var orderByLabel = document.createElement('label');
+			  orderByLabel.htmlFor = 'order_by-' + i + '-' + ts;
+			  orderByLabel.className = 'btn btn-outline-secondary';
+			  orderByLabel.textContent = 'Order By';
+			  orderByElement.appendChild(orderByLabel);
+			  col4.appendChild(orderByElement);
+			  
+			  var col5 = document.createElement('div');
+			  col5.className = 'col-1 p-1';
+			  col5.appendChild(createDeleteButton('field-' + i + '-' + ts));
 			
 			  divElement.appendChild(col1);
 			  divElement.appendChild(col2);
 			  divElement.appendChild(col3);
 			  divElement.appendChild(col4);
-			
+			  divElement.appendChild(col5);
+			  
 			  return divElement;
 			}
 			
@@ -353,9 +374,9 @@
 			  formData.forEach(function(value, key) {
 			    formInputs.push({ name: key, value: value });
 			  });
-			  
 			  var select = [];
 			  var select_as = [];
+			  var order_by = [];
 			  
 			  for (var i = 0; i < formInputs.length; i++) {
 			    var arr = formInputs[i];
@@ -365,6 +386,10 @@
 			      select.push(str2[1]);
 			    }else if(str2[0] === "select_as"){
 			      select_as.push(arr[["value"]]);
+			    }else if(str2[0] === "order_by"){
+			      if(arr[["value"]] === "on"){
+			        order_by.push(str2[1]);
+			      }
 			    }
 			  }
 			  
@@ -373,7 +398,7 @@
 			  var group_by_statement = [];
 			  var join_num_order = [];
 			  var any_group_by = 0;
-			  
+			
 			  for (var i = 0; i < select.length; i++) {
 			    var query_select_index = active_config[[0]].indexOf("query_select");
 			    var requires_group_by_index = active_config[[0]].indexOf("requires_group_by");
@@ -391,12 +416,22 @@
 			      any_group_by = 1;
 			    }
 			    var query_group_by = active_config[[select_index_val]][[query_group_by_index]];
-			    
 			    select_statement.push(select_str);
 			    group_by_statement.push(query_group_by);
 			    join_num_order.push(active_config[[select_index_val]][[join_num_order_index]]);
 			    join_num_order.push(active_config[[select_index_val]][[depends_on_join_num_index]]);
-			    
+			  }
+			  
+			  var order_by_statement = [];
+			  if(order_by.length > 0){
+			    var any_order_by = 1;
+			    order_by = getUniqueItemsInOrder(order_by);
+			    var query_select_index = active_config[[0]].indexOf("query_select");
+			    for (var i = 0; i < order_by.length; i++) {
+			      var order_by_index = order_by[[i]];
+			      var query_select = active_config[[order_by_index]][[query_select_index]];
+			      order_by_statement.push(query_select);
+			    }
 			  }
 			  
 			  join_num_order = new Set(join_num_order);
@@ -426,7 +461,14 @@
 			    group_by_statement = "";
 			  }
 			  
-			  var query = "SELECT\n" + select_statement.join(',\n') + "\nFROM\n" + from_statement.join('\n') + group_by_statement + ';';
+			  var order_by_cols = getUniqueItemsInOrder(order_by_statement);
+			  if(any_order_by === 1){
+			    order_by_statement = "\nORDER BY\n" + order_by_cols.join(',\n');
+			  }else{
+			    order_by_statement = "";
+			  }
+			  
+			  var query = "SELECT\n" + select_statement.join(',\n') + "\nFROM\n" + from_statement.join('\n') + group_by_statement + order_by_statement + ';';
 			  var query_res = "".concat(
 			    '<h6>Results<h6>',
 			  '<div class="card">',
