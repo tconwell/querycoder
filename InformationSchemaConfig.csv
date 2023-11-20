@@ -2,14 +2,25 @@ select_as,description,query_select,requires_group_by,query_group_by,schema_name,
 TABLE_CATALOG,Table qualifier.,tables.TABLE_CATALOG,0,tables.TABLE_CATALOG,INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
 TABLE_SCHEMA,Name of schema that contains the table.,tables.TABLE_SCHEMA,0,tables.TABLE_SCHEMA,INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
 TABLE_NAME,Table or view name.,tables.TABLE_NAME,0,tables.TABLE_NAME,INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
+QUOTED_TABLE_CATALOG,,"CONCAT('''', REPLACE(tables.tables.TABLE_CATALOG, '''', ''''''), '''')",0,"CONCAT('''', REPLACE(tables.tables.TABLE_CATALOG, '''', ''''''), '''')",INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
+QUOTED_TABLE_SCHEMA,,"CONCAT('''', REPLACE(tables.tables.TABLE_SCHEMA, '''', ''''''), '''')",0,"CONCAT('''', REPLACE(tables.tables.TABLE_SCHEMA, '''', ''''''), '''')",INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
+QUOTED_TABLE_NAME,,"CONCAT('''', REPLACE(tables.tables.TABLE_NAME, '''', ''''''), '''')",0,"CONCAT('''', REPLACE(tables.tables.TABLE_NAME, '''', ''''''), '''')",INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
+SCHEMA_QUALIFIED_TABLE_NAME,Table or view name including the schema.,"CONCAT(tables.TABLE_SCHEMA, '.', tables.TABLE_NAME)",0,"CONCAT(tables.TABLE_SCHEMA, '.', tables.TABLE_NAME)",INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
+FULLY_QUALIFIED_TABLE_NAME,Table or view name including the schema and database.,"CONCAT(tables.TABLE_CATALOG, ‘.’, tables.TABLE_SCHEMA, ‘.’, tables.TABLE_NAME)",0,"CONCAT(tables.TABLE_CATALOG, ‘.’, tables.TABLE_SCHEMA, ‘.’, tables.TABLE_NAME)",INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
 TABLE_TYPE,Type of table. Can be VIEW or BASE TABLE.,tables.TABLE_TYPE,0,tables.TABLE_TYPE,INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
-NUM_COLS,Number of columns in a table.,COUNT(columns.*),1,,INFORMATION_SCHEMA,columns,"LEFT JOIN
+NUM_COLS,Number of columns in a table.,"COUNT(columns.COLUMN_NAME) OVER (PARTITION BY tables.TABLE_CATALOG, tables.TABLE_SCHEMA, tables.TABLE_NAME)",0,"COUNT(columns.COLUMN_NAME) OVER (PARTITION BY tables.TABLE_CATALOG, tables.TABLE_SCHEMA, tables.TABLE_NAME)",INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
 COLUMN_NAME,Column name.,columns.COLUMN_NAME,0,columns.COLUMN_NAME,INFORMATION_SCHEMA,columns,"LEFT JOIN
+INFORMATION_SCHEMA.columns
+ON
+tables.TABLE_CATALOG = columns.TABLE_CATALOG
+AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
+AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
+TABLE_QUALIFIED_COLUMN_NAME,Column name including the table.,"CONCAT(tables.TABLE_NAME, '.', columns.COLUMN_NAME)",0,"CONCAT(tables.TABLE_NAME, '.', columns.COLUMN_NAME)",INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
@@ -129,3 +140,87 @@ ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
+CONSTRAINT_CATALOG,,table_constraints.CONSTRAINT_CATALOG,0,table_constraints.CONSTRAINT_CATALOG,INFORMATION_SCHEMA,table_constraints,"LEFT JOIN 
+INFORMATION_SCHEMA.table_constraints
+ON
+tables.TABLE_CATALOG = table_constraints.TABLE_CATALOG
+AND tables.TABLE_SCHEMA = table_constraints.TABLE_SCHEMA
+AND tables.TABLE_NAME = table_constraints.TABLE_NAME
+LEFT JOIN 
+INFORMATION_SCHEMA.key_column_usage
+ON
+table_constraints.TABLE_CATALOG = key_column_usage.TABLE_CATALOG
+AND table_constraints.TABLE_SCHEMA = key_column_usage.TABLE_SCHEMA
+AND table_constraints.TABLE_NAME = key_column_usage.TABLE_NAME
+AND table_constraints.CONSTRAINT_NAME = key_column_usage.CONSTRAINT_NAME
+AND columns.COLUMN_NAME = key_column_usage.COLUMN_NAME",2,1
+CONSTRAINT_SCHEMA,,table_constraints.CONSTRAINT_SCHEMA,,table_constraints.table_constraints.CONSTRAINT_SCHEMA,INFORMATION_SCHEMA,table_constraints,"LEFT JOIN 
+INFORMATION_SCHEMA.table_constraints
+ON
+tables.TABLE_CATALOG = table_constraints.TABLE_CATALOG
+AND tables.TABLE_SCHEMA = table_constraints.TABLE_SCHEMA
+AND tables.TABLE_NAME = table_constraints.TABLE_NAME
+LEFT JOIN 
+INFORMATION_SCHEMA.key_column_usage
+ON
+table_constraints.TABLE_CATALOG = key_column_usage.TABLE_CATALOG
+AND table_constraints.TABLE_SCHEMA = key_column_usage.TABLE_SCHEMA
+AND table_constraints.TABLE_NAME = key_column_usage.TABLE_NAME
+AND table_constraints.CONSTRAINT_NAME = key_column_usage.CONSTRAINT_NAME
+AND columns.COLUMN_NAME = key_column_usage.COLUMN_NAME",2,1
+CONSTRAINT_NAME,,table_constraints.CONSTRAINT_NAME,,table_constraints.table_constraints.CONSTRAINT_NAME,INFORMATION_SCHEMA,table_constraints,"LEFT JOIN 
+INFORMATION_SCHEMA.table_constraints
+ON
+tables.TABLE_CATALOG = table_constraints.TABLE_CATALOG
+AND tables.TABLE_SCHEMA = table_constraints.TABLE_SCHEMA
+AND tables.TABLE_NAME = table_constraints.TABLE_NAME
+LEFT JOIN 
+INFORMATION_SCHEMA.key_column_usage
+ON
+table_constraints.TABLE_CATALOG = key_column_usage.TABLE_CATALOG
+AND table_constraints.TABLE_SCHEMA = key_column_usage.TABLE_SCHEMA
+AND table_constraints.TABLE_NAME = key_column_usage.TABLE_NAME
+AND table_constraints.CONSTRAINT_NAME = key_column_usage.CONSTRAINT_NAME
+AND columns.COLUMN_NAME = key_column_usage.COLUMN_NAME",2,1
+CONSTRAINT_TYPE,,table_constraints.CONSTRAINT_TYPE,,table_constraints.table_constraints.CONSTRAINT_TYPE,INFORMATION_SCHEMA,table_constraints,"LEFT JOIN 
+INFORMATION_SCHEMA.table_constraints
+ON
+tables.TABLE_CATALOG = table_constraints.TABLE_CATALOG
+AND tables.TABLE_SCHEMA = table_constraints.TABLE_SCHEMA
+AND tables.TABLE_NAME = table_constraints.TABLE_NAME
+LEFT JOIN 
+INFORMATION_SCHEMA.key_column_usage
+ON
+table_constraints.TABLE_CATALOG = key_column_usage.TABLE_CATALOG
+AND table_constraints.TABLE_SCHEMA = key_column_usage.TABLE_SCHEMA
+AND table_constraints.TABLE_NAME = key_column_usage.TABLE_NAME
+AND table_constraints.CONSTRAINT_NAME = key_column_usage.CONSTRAINT_NAME
+AND columns.COLUMN_NAME = key_column_usage.COLUMN_NAME",2,1
+IS_DEFERRABLE,,table_constraints.IS_DEFERRABLE,,table_constraints.table_constraints.IS_DEFERRABLE,INFORMATION_SCHEMA,table_constraints,"LEFT JOIN 
+INFORMATION_SCHEMA.table_constraints
+ON
+tables.TABLE_CATALOG = table_constraints.TABLE_CATALOG
+AND tables.TABLE_SCHEMA = table_constraints.TABLE_SCHEMA
+AND tables.TABLE_NAME = table_constraints.TABLE_NAME
+LEFT JOIN 
+INFORMATION_SCHEMA.key_column_usage
+ON
+table_constraints.TABLE_CATALOG = key_column_usage.TABLE_CATALOG
+AND table_constraints.TABLE_SCHEMA = key_column_usage.TABLE_SCHEMA
+AND table_constraints.TABLE_NAME = key_column_usage.TABLE_NAME
+AND table_constraints.CONSTRAINT_NAME = key_column_usage.CONSTRAINT_NAME
+AND columns.COLUMN_NAME = key_column_usage.COLUMN_NAME",2,1
+INITIALLY_DEFERRED,,table_constraints.INITIALLY_DEFERRED,,table_constraints.table_constraints.INITIALLY_DEFERRED,INFORMATION_SCHEMA,table_constraints,"LEFT JOIN 
+INFORMATION_SCHEMA.table_constraints
+ON
+tables.TABLE_CATALOG = table_constraints.TABLE_CATALOG
+AND tables.TABLE_SCHEMA = table_constraints.TABLE_SCHEMA
+AND tables.TABLE_NAME = table_constraints.TABLE_NAME
+LEFT JOIN 
+INFORMATION_SCHEMA.key_column_usage
+ON
+table_constraints.TABLE_CATALOG = key_column_usage.TABLE_CATALOG
+AND table_constraints.TABLE_SCHEMA = key_column_usage.TABLE_SCHEMA
+AND table_constraints.TABLE_NAME = key_column_usage.TABLE_NAME
+AND table_constraints.CONSTRAINT_NAME = key_column_usage.CONSTRAINT_NAME
+AND columns.COLUMN_NAME = key_column_usage.COLUMN_NAME",2,1
