@@ -153,7 +153,7 @@ table_constraints.TABLE_CATALOG = key_column_usage.TABLE_CATALOG
 AND table_constraints.TABLE_SCHEMA = key_column_usage.TABLE_SCHEMA
 AND table_constraints.TABLE_NAME = key_column_usage.TABLE_NAME
 AND table_constraints.CONSTRAINT_NAME = key_column_usage.CONSTRAINT_NAME
-AND columns.COLUMN_NAME = key_column_usage.COLUMN_NAME",2,1
+AND columns.COLUMN_NAME = key_column_usage.COLUMN_NAME",2,"0,1"
 CONSTRAINT_SCHEMA,,table_constraints.CONSTRAINT_SCHEMA,,table_constraints.table_constraints.CONSTRAINT_SCHEMA,INFORMATION_SCHEMA,table_constraints,"LEFT JOIN 
 INFORMATION_SCHEMA.table_constraints
 ON
@@ -167,7 +167,7 @@ table_constraints.TABLE_CATALOG = key_column_usage.TABLE_CATALOG
 AND table_constraints.TABLE_SCHEMA = key_column_usage.TABLE_SCHEMA
 AND table_constraints.TABLE_NAME = key_column_usage.TABLE_NAME
 AND table_constraints.CONSTRAINT_NAME = key_column_usage.CONSTRAINT_NAME
-AND columns.COLUMN_NAME = key_column_usage.COLUMN_NAME",2,1
+AND columns.COLUMN_NAME = key_column_usage.COLUMN_NAME",2,"0,1"
 CONSTRAINT_NAME,,table_constraints.CONSTRAINT_NAME,,table_constraints.table_constraints.CONSTRAINT_NAME,INFORMATION_SCHEMA,table_constraints,"LEFT JOIN 
 INFORMATION_SCHEMA.table_constraints
 ON
@@ -181,7 +181,7 @@ table_constraints.TABLE_CATALOG = key_column_usage.TABLE_CATALOG
 AND table_constraints.TABLE_SCHEMA = key_column_usage.TABLE_SCHEMA
 AND table_constraints.TABLE_NAME = key_column_usage.TABLE_NAME
 AND table_constraints.CONSTRAINT_NAME = key_column_usage.CONSTRAINT_NAME
-AND columns.COLUMN_NAME = key_column_usage.COLUMN_NAME",2,1
+AND columns.COLUMN_NAME = key_column_usage.COLUMN_NAME",2,"0,1"
 CONSTRAINT_TYPE,,table_constraints.CONSTRAINT_TYPE,,table_constraints.table_constraints.CONSTRAINT_TYPE,INFORMATION_SCHEMA,table_constraints,"LEFT JOIN 
 INFORMATION_SCHEMA.table_constraints
 ON
@@ -195,7 +195,7 @@ table_constraints.TABLE_CATALOG = key_column_usage.TABLE_CATALOG
 AND table_constraints.TABLE_SCHEMA = key_column_usage.TABLE_SCHEMA
 AND table_constraints.TABLE_NAME = key_column_usage.TABLE_NAME
 AND table_constraints.CONSTRAINT_NAME = key_column_usage.CONSTRAINT_NAME
-AND columns.COLUMN_NAME = key_column_usage.COLUMN_NAME",2,1
+AND columns.COLUMN_NAME = key_column_usage.COLUMN_NAME",2,"0,1"
 IS_DEFERRABLE,,table_constraints.IS_DEFERRABLE,,table_constraints.table_constraints.IS_DEFERRABLE,INFORMATION_SCHEMA,table_constraints,"LEFT JOIN 
 INFORMATION_SCHEMA.table_constraints
 ON
@@ -209,7 +209,7 @@ table_constraints.TABLE_CATALOG = key_column_usage.TABLE_CATALOG
 AND table_constraints.TABLE_SCHEMA = key_column_usage.TABLE_SCHEMA
 AND table_constraints.TABLE_NAME = key_column_usage.TABLE_NAME
 AND table_constraints.CONSTRAINT_NAME = key_column_usage.CONSTRAINT_NAME
-AND columns.COLUMN_NAME = key_column_usage.COLUMN_NAME",2,1
+AND columns.COLUMN_NAME = key_column_usage.COLUMN_NAME",2,"0,1"
 INITIALLY_DEFERRED,,table_constraints.INITIALLY_DEFERRED,,table_constraints.table_constraints.INITIALLY_DEFERRED,INFORMATION_SCHEMA,table_constraints,"LEFT JOIN 
 INFORMATION_SCHEMA.table_constraints
 ON
@@ -223,4 +223,4 @@ table_constraints.TABLE_CATALOG = key_column_usage.TABLE_CATALOG
 AND table_constraints.TABLE_SCHEMA = key_column_usage.TABLE_SCHEMA
 AND table_constraints.TABLE_NAME = key_column_usage.TABLE_NAME
 AND table_constraints.CONSTRAINT_NAME = key_column_usage.CONSTRAINT_NAME
-AND columns.COLUMN_NAME = key_column_usage.COLUMN_NAME",2,1
+AND columns.COLUMN_NAME = key_column_usage.COLUMN_NAME",2,"0,1"

@@ -419,7 +419,10 @@
 			    select_statement.push(select_str);
 			    group_by_statement.push(query_group_by);
 			    join_num_order.push(active_config[[select_index_val]][[join_num_order_index]]);
-			    join_num_order.push(active_config[[select_index_val]][[depends_on_join_num_index]]);
+			    var depends_on = active_config[[select_index_val]][[depends_on_join_num_index]].split(',')
+			    for (var j = 0; j < depends_on.length; j++) {
+			      join_num_order.push(depends_on[[j]])
+			    }
 			  }
 			  
 			  var order_by_statement = [];
