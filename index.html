@@ -150,6 +150,14 @@
 			</div>
 		</div>
 		<script>
+			/*window.onload = function() {
+			  document.body.style.maxHeight = window.innerHeight + 'px';
+			};
+			
+			window.addEventListener('resize', function() {
+			  document.body.style.maxHeight = window.innerHeight + 'px';
+			});
+			*/
 			var active_config = "";
 			
 			if(localStorage.getItem('parsed_config') !== null){
@@ -157,7 +165,7 @@
 			  populateFields();
 			}
 			
-			var blank_config_csv = 'select_as,description,query_select,requires_group_by,query_group_by,schema_name,table_name,join_statement,join_num_order,depends_on_join_num';
+			var blank_config_csv = 'select_as,description,query_select,requires_group_by,query_group_by,where_only,where_clause,schema_name,table_name,join_statement,join_num_order,depends_on_join_num';
 			
 			function validateForm(form_id) {
 			  for (const el of document.getElementById(form_id).querySelectorAll("[required]")) {
@@ -213,7 +221,6 @@
 			  for (var i = 1; i < select_as.length; i++) {
 			    var row = tbodyElement.insertRow();
 			    var cell1 = row.insertCell(0);
-			    //cell1.className = "btn btn-light btn-sm text-start";
 			    cell1.className = "text-start";
 			    cell1.id = "select_as-" + i;
 			    cell1.draggable = true;
@@ -432,10 +439,12 @@
 			  
 			  var select_statement = [];
 			  var from_statement = [];
+			  var where_statement = [];
 			  var group_by_statement = [];
 			  var join_num_order = [];
 			  var any_group_by = 0;
-			
+			  var any_where = 0;
+			  
 			  for (var i = 0; i < select.length; i++) {
 			    var query_select_index = active_config[[0]].indexOf("query_select");
 			    var requires_group_by_index = active_config[[0]].indexOf("requires_group_by");
@@ -444,17 +453,27 @@
 			    var join_statement_index = active_config[[0]].indexOf("join_statement");
 			    var join_num_order_index = active_config[[0]].indexOf("join_num_order");
 			    var depends_on_join_num_index = active_config[[0]].indexOf("depends_on_join_num");
+			    var where_only_index = active_config[[0]].indexOf("where_only");
+			    var where_clause_index = active_config[[0]].indexOf("where_clause");
 			    
 			    var select_index_val = select[i];
+			    var where_only = active_config[[select_index_val]][[where_only_index]];
 			    var query_select = active_config[[select_index_val]][[query_select_index]];
 			    var select_str = query_select + " AS " + select_as[i];
 			    var requires_group_by = active_config[[select_index_val]][[requires_group_by_index]];
+			    var query_group_by = active_config[[select_index_val]][[query_group_by_index]];
+			    if(where_only != "1"){
+			      select_statement.push(select_str);
+			      group_by_statement.push(query_group_by);
+			    }
+			    var where_clause = active_config[[select_index_val]][[where_clause_index]];
 			    if(requires_group_by === "1"){
 			      any_group_by = 1;
 			    }
-			    var query_group_by = active_config[[select_index_val]][[query_group_by_index]];
-			    select_statement.push(select_str);
-			    group_by_statement.push(query_group_by);
+			    if(where_clause.length > 0){
+			      any_where = 1;
+			    }
+			    where_statement.push(where_clause);
 			    join_num_order.push(active_config[[select_index_val]][[join_num_order_index]]);
 			    var depends_on = active_config[[select_index_val]][[depends_on_join_num_index]].split(',');
 			    for (var j = 0; j < depends_on.length; j++) {
@@ -493,6 +512,16 @@
 			      }
 			    }
 			  }
+			  from_statement = from_statement.filter(item => item !== "");
+			  where_statement = where_statement.filter(item => item !== "");
+			  var where = getUniqueItemsInOrder(where_statement);
+			  
+			  if(any_where === 1){
+			    where_statement = "\nWHERE\n" + where.join('\nAND ');
+			  }else{
+			    where_statement = "";
+			  }
+			  
 			  var group_by_cols = group_by_statement.filter(item => item !== "");
 			  var group_by_cols = getUniqueItemsInOrder(group_by_cols);
 			  if(any_group_by === 1){
@@ -508,7 +537,7 @@
 			    order_by_statement = "";
 			  }
 			  
-			  var query = "SELECT\n" + select_statement.join(',\n') + "\nFROM\n" + from_statement.join('\n') + group_by_statement + order_by_statement + ';';
+			  var query = "SELECT\n" + select_statement.join(',\n') + "\nFROM\n" + from_statement.join('\n') + where_statement + group_by_statement + order_by_statement + ';';
 			  var query_res = "".concat(
 			    '<h6>Results<h6>',
 			  '<div class="card">',
