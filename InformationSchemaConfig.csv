@@ -1,146 +1,146 @@
-select_as,description,query_select,requires_group_by,query_group_by,schema_name,table_name,join_statement,join_num_order,depends_on_join_num
-TABLE_CATALOG,Table qualifier.,tables.TABLE_CATALOG,0,tables.TABLE_CATALOG,INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
-TABLE_SCHEMA,Name of schema that contains the table.,tables.TABLE_SCHEMA,0,tables.TABLE_SCHEMA,INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
-TABLE_NAME,Table or view name.,tables.TABLE_NAME,0,tables.TABLE_NAME,INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
-QUOTED_TABLE_CATALOG,,"CONCAT('''', REPLACE(tables.TABLE_CATALOG, '''', ''''''), '''')",0,"CONCAT('''', REPLACE(tables.TABLE_CATALOG, '''', ''''''), '''')",INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
-QUOTED_TABLE_SCHEMA,,"CONCAT('''', REPLACE(tables.TABLE_SCHEMA, '''', ''''''), '''')",0,"CONCAT('''', REPLACE(tables.TABLE_SCHEMA, '''', ''''''), '''')",INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
-QUOTED_TABLE_NAME,,"CONCAT('''', REPLACE(tables.TABLE_NAME, '''', ''''''), '''')",0,"CONCAT('''', REPLACE(tables.TABLE_NAME, '''', ''''''), '''')",INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
-SCHEMA_QUALIFIED_TABLE_NAME,Table or view name including the schema.,"CONCAT(tables.TABLE_SCHEMA, '.', tables.TABLE_NAME)",0,"CONCAT(tables.TABLE_SCHEMA, '.', tables.TABLE_NAME)",INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
-FULLY_QUALIFIED_TABLE_NAME,Table or view name including the schema and database.,"CONCAT(tables.TABLE_CATALOG, '.', tables.TABLE_SCHEMA, '.', tables.TABLE_NAME)",0,"CONCAT(tables.TABLE_CATALOG, '.', tables.TABLE_SCHEMA, '.', tables.TABLE_NAME)",INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
-TABLE_TYPE,Type of table. Can be VIEW or BASE TABLE.,tables.TABLE_TYPE,0,tables.TABLE_TYPE,INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
-NUM_COLS,Number of columns in a table.,"COUNT(columns.COLUMN_NAME) OVER (PARTITION BY tables.TABLE_CATALOG, tables.TABLE_SCHEMA, tables.TABLE_NAME)",0,"COUNT(columns.COLUMN_NAME) OVER (PARTITION BY tables.TABLE_CATALOG, tables.TABLE_SCHEMA, tables.TABLE_NAME)",INFORMATION_SCHEMA,columns,"LEFT JOIN
+select_as,description,query_select,requires_group_by,query_group_by,where_only,where_clause,schema_name,table_name,join_statement,join_num_order,depends_on_join_num
+TABLE_CATALOG,Table qualifier.,tables.TABLE_CATALOG,0,tables.TABLE_CATALOG,,,INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
+TABLE_SCHEMA,Name of schema that contains the table.,tables.TABLE_SCHEMA,0,tables.TABLE_SCHEMA,,,INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
+TABLE_NAME,Table or view name.,tables.TABLE_NAME,0,tables.TABLE_NAME,,,INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
+QUOTED_TABLE_CATALOG,,"CONCAT('''', REPLACE(tables.TABLE_CATALOG, '''', ''''''), '''')",0,"CONCAT('''', REPLACE(tables.TABLE_CATALOG, '''', ''''''), '''')",,,INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
+QUOTED_TABLE_SCHEMA,,"CONCAT('''', REPLACE(tables.TABLE_SCHEMA, '''', ''''''), '''')",0,"CONCAT('''', REPLACE(tables.TABLE_SCHEMA, '''', ''''''), '''')",,,INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
+QUOTED_TABLE_NAME,,"CONCAT('''', REPLACE(tables.TABLE_NAME, '''', ''''''), '''')",0,"CONCAT('''', REPLACE(tables.TABLE_NAME, '''', ''''''), '''')",,,INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
+SCHEMA_QUALIFIED_TABLE_NAME,Table or view name including the schema.,"CONCAT(tables.TABLE_SCHEMA, '.', tables.TABLE_NAME)",0,"CONCAT(tables.TABLE_SCHEMA, '.', tables.TABLE_NAME)",,,INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
+FULLY_QUALIFIED_TABLE_NAME,Table or view name including the schema and database.,"CONCAT(tables.TABLE_CATALOG, '.', tables.TABLE_SCHEMA, '.', tables.TABLE_NAME)",0,"CONCAT(tables.TABLE_CATALOG, '.', tables.TABLE_SCHEMA, '.', tables.TABLE_NAME)",,,INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
+TABLE_TYPE,Type of table. Can be VIEW or BASE TABLE.,tables.TABLE_TYPE,0,tables.TABLE_TYPE,,,INFORMATION_SCHEMA,tables,INFORMATION_SCHEMA.tables,0,
+NUM_COLS,Number of columns in a table.,"COUNT(columns.COLUMN_NAME) OVER (PARTITION BY tables.TABLE_CATALOG, tables.TABLE_SCHEMA, tables.TABLE_NAME)",0,"COUNT(columns.COLUMN_NAME) OVER (PARTITION BY tables.TABLE_CATALOG, tables.TABLE_SCHEMA, tables.TABLE_NAME)",,,INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
-COLUMN_NAME,Column name.,columns.COLUMN_NAME,0,columns.COLUMN_NAME,INFORMATION_SCHEMA,columns,"LEFT JOIN
+COLUMN_NAME,Column name.,columns.COLUMN_NAME,0,columns.COLUMN_NAME,,,INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
-TABLE_QUALIFIED_COLUMN_NAME,Column name including the table.,"CONCAT(tables.TABLE_NAME, '.', columns.COLUMN_NAME)",0,"CONCAT(tables.TABLE_NAME, '.', columns.COLUMN_NAME)",INFORMATION_SCHEMA,columns,"LEFT JOIN
+TABLE_QUALIFIED_COLUMN_NAME,Column name including the table.,"CONCAT(tables.TABLE_NAME, '.', columns.COLUMN_NAME)",0,"CONCAT(tables.TABLE_NAME, '.', columns.COLUMN_NAME)",,,INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
-ORDINAL_POSITION,Column identification number.,columns.ORDINAL_POSITION,0,columns.ORDINAL_POSITION,INFORMATION_SCHEMA,columns,"LEFT JOIN
+ORDINAL_POSITION,Column identification number.,columns.ORDINAL_POSITION,0,columns.ORDINAL_POSITION,,,INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
-COLUMN_DEFAULT,Default value of the column.,columns.COLUMN_DEFAULT,0,columns.COLUMN_DEFAULT,INFORMATION_SCHEMA,columns,"LEFT JOIN
+COLUMN_DEFAULT,Default value of the column.,columns.COLUMN_DEFAULT,0,columns.COLUMN_DEFAULT,,,INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
-IS_NULLABLE,"Nullability of the column. If this column allows for NULL, this column returns YES. Otherwise, NO is returned.",columns.IS_NULLABLE,0,columns.IS_NULLABLE,INFORMATION_SCHEMA,columns,"LEFT JOIN
+IS_NULLABLE,"Nullability of the column. If this column allows for NULL, this column returns YES. Otherwise, NO is returned.",columns.IS_NULLABLE,0,columns.IS_NULLABLE,,,INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
-DATA_TYPE,System-supplied data type.,columns.DATA_TYPE,0,columns.DATA_TYPE,INFORMATION_SCHEMA,columns,"LEFT JOIN
+DATA_TYPE,System-supplied data type.,columns.DATA_TYPE,0,columns.DATA_TYPE,,,INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
-CHARACTER_MAXIMUM_LENGTH,"Maximum length, in characters, for binary data, character data, or text and image data. -1 for xml and large-value type data. Otherwise, NULL is returned.",columns.CHARACTER_MAXIMUM_LENGTH,0,columns.CHARACTER_MAXIMUM_LENGTH,INFORMATION_SCHEMA,columns,"LEFT JOIN
+CHARACTER_MAXIMUM_LENGTH,"Maximum length, in characters, for binary data, character data, or text and image data. -1 for xml and large-value type data. Otherwise, NULL is returned.",columns.CHARACTER_MAXIMUM_LENGTH,0,columns.CHARACTER_MAXIMUM_LENGTH,,,INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
-CHARACTER_OCTET_LENGTH,"Maximum length, in bytes, for binary data, character data, or text and image data. -1 for xml and large-value type data. Otherwise, NULL is returned.",columns.CHARACTER_OCTET_LENGTH,0,columns.CHARACTER_OCTET_LENGTH,INFORMATION_SCHEMA,columns,"LEFT JOIN
+CHARACTER_OCTET_LENGTH,"Maximum length, in bytes, for binary data, character data, or text and image data. -1 for xml and large-value type data. Otherwise, NULL is returned.",columns.CHARACTER_OCTET_LENGTH,0,columns.CHARACTER_OCTET_LENGTH,,,INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
-NUMERIC_PRECISION,"Precision of approximate numeric data, exact numeric data, integer data, or monetary data. Otherwise, NULL is returned.",columns.NUMERIC_PRECISION,0,columns.NUMERIC_PRECISION,INFORMATION_SCHEMA,columns,"LEFT JOIN
+NUMERIC_PRECISION,"Precision of approximate numeric data, exact numeric data, integer data, or monetary data. Otherwise, NULL is returned.",columns.NUMERIC_PRECISION,0,columns.NUMERIC_PRECISION,,,INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
-NUMERIC_PRECISION_RADIX,"Precision radix of approximate numeric data, exact numeric data, integer data, or monetary data. Otherwise, NULL is returned.",columns.NUMERIC_PRECISION_RADIX,0,columns.NUMERIC_PRECISION_RADIX,INFORMATION_SCHEMA,columns,"LEFT JOIN
+NUMERIC_PRECISION_RADIX,"Precision radix of approximate numeric data, exact numeric data, integer data, or monetary data. Otherwise, NULL is returned.",columns.NUMERIC_PRECISION_RADIX,0,columns.NUMERIC_PRECISION_RADIX,,,INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
-NUMERIC_SCALE,"Scale of approximate numeric data, exact numeric data, integer data, or monetary data. Otherwise, NULL is returned.",columns.NUMERIC_SCALE,0,columns.NUMERIC_SCALE,INFORMATION_SCHEMA,columns,"LEFT JOIN
+NUMERIC_SCALE,"Scale of approximate numeric data, exact numeric data, integer data, or monetary data. Otherwise, NULL is returned.",columns.NUMERIC_SCALE,0,columns.NUMERIC_SCALE,,,INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
-DATETIME_PRECISION,"Subtype code for datetime and ISO interval data types. For other data types, NULL is returned.",columns.DATETIME_PRECISION,0,columns.DATETIME_PRECISION,INFORMATION_SCHEMA,columns,"LEFT JOIN
+DATETIME_PRECISION,"Subtype code for datetime and ISO interval data types. For other data types, NULL is returned.",columns.DATETIME_PRECISION,0,columns.DATETIME_PRECISION,,,INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
-CHARACTER_SET_CATALOG,"Returns master. This indicates the database in which the character set is located, if the column is character data or text data type. Otherwise, NULL is returned.",columns.CHARACTER_SET_CATALOG,0,columns.CHARACTER_SET_CATALOG,INFORMATION_SCHEMA,columns,"LEFT JOIN
+CHARACTER_SET_CATALOG,"Returns master. This indicates the database in which the character set is located, if the column is character data or text data type. Otherwise, NULL is returned.",columns.CHARACTER_SET_CATALOG,0,columns.CHARACTER_SET_CATALOG,,,INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
-CHARACTER_SET_SCHEMA,Always returns NULL.,columns.CHARACTER_SET_SCHEMA,0,columns.CHARACTER_SET_SCHEMA,INFORMATION_SCHEMA,columns,"LEFT JOIN
+CHARACTER_SET_SCHEMA,Always returns NULL.,columns.CHARACTER_SET_SCHEMA,0,columns.CHARACTER_SET_SCHEMA,,,INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
-CHARACTER_SET_NAME,"Returns the unique name for the character set if this column is character data or text data type. Otherwise, NULL is returned.",columns.CHARACTER_SET_NAME,0,columns.CHARACTER_SET_NAME,INFORMATION_SCHEMA,columns,"LEFT JOIN
+CHARACTER_SET_NAME,"Returns the unique name for the character set if this column is character data or text data type. Otherwise, NULL is returned.",columns.CHARACTER_SET_NAME,0,columns.CHARACTER_SET_NAME,,,INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
-COLLATION_CATALOG,Always returns NULL.,columns.COLLATION_CATALOG,0,columns.COLLATION_CATALOG,INFORMATION_SCHEMA,columns,"LEFT JOIN
+COLLATION_CATALOG,Always returns NULL.,columns.COLLATION_CATALOG,0,columns.COLLATION_CATALOG,,,INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
-COLLATION_SCHEMA,Always returns NULL.,columns.COLLATION_SCHEMA,0,columns.COLLATION_SCHEMA,INFORMATION_SCHEMA,columns,"LEFT JOIN
+COLLATION_SCHEMA,Always returns NULL.,columns.COLLATION_SCHEMA,0,columns.COLLATION_SCHEMA,,,INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
-COLLATION_NAME,"Returns the unique name for the collation if the column is character data or text data type. Otherwise, NULL is returned.",columns.COLLATION_NAME,0,columns.COLLATION_NAME,INFORMATION_SCHEMA,columns,"LEFT JOIN
+COLLATION_NAME,"Returns the unique name for the collation if the column is character data or text data type. Otherwise, NULL is returned.",columns.COLLATION_NAME,0,columns.COLLATION_NAME,,,INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
-DOMAIN_CATALOG,"If the column is an alias data type, this column is the database name in which the user-defined data type was created. Otherwise, NULL is returned.",columns.DOMAIN_CATALOG,0,columns.DOMAIN_CATALOG,INFORMATION_SCHEMA,columns,"LEFT JOIN
+DOMAIN_CATALOG,"If the column is an alias data type, this column is the database name in which the user-defined data type was created. Otherwise, NULL is returned.",columns.DOMAIN_CATALOG,0,columns.DOMAIN_CATALOG,,,INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
-DOMAIN_SCHEMA,"If the column is a user-defined data type, this column returns the name of the schema of the user-defined data type. Otherwise, NULL is returned.",columns.DOMAIN_SCHEMA,0,columns.DOMAIN_SCHEMA,INFORMATION_SCHEMA,columns,"LEFT JOIN
+DOMAIN_SCHEMA,"If the column is a user-defined data type, this column returns the name of the schema of the user-defined data type. Otherwise, NULL is returned.",columns.DOMAIN_SCHEMA,0,columns.DOMAIN_SCHEMA,,,INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
-DOMAIN_NAME,"If the column is a user-defined data type, this column is the name of the user-defined data type. Otherwise, NULL is returned.",columns.DOMAIN_NAME,0,columns.DOMAIN_NAME,INFORMATION_SCHEMA,columns,"LEFT JOIN
+DOMAIN_NAME,"If the column is a user-defined data type, this column is the name of the user-defined data type. Otherwise, NULL is returned.",columns.DOMAIN_NAME,0,columns.DOMAIN_NAME,,,INFORMATION_SCHEMA,columns,"LEFT JOIN
 INFORMATION_SCHEMA.columns
 ON
 tables.TABLE_CATALOG = columns.TABLE_CATALOG
 AND tables.TABLE_SCHEMA = columns.TABLE_SCHEMA
 AND tables.TABLE_NAME = columns.TABLE_NAME",1,0
-CONSTRAINT_CATALOG,,table_constraints.CONSTRAINT_CATALOG,0,table_constraints.CONSTRAINT_CATALOG,INFORMATION_SCHEMA,table_constraints,"LEFT JOIN 
+CONSTRAINT_CATALOG,,table_constraints.CONSTRAINT_CATALOG,0,table_constraints.CONSTRAINT_CATALOG,,,INFORMATION_SCHEMA,table_constraints,"LEFT JOIN 
 INFORMATION_SCHEMA.table_constraints
 ON
 tables.TABLE_CATALOG = table_constraints.TABLE_CATALOG
@@ -154,7 +154,7 @@ AND table_constraints.TABLE_SCHEMA = key_column_usage.TABLE_SCHEMA
 AND table_constraints.TABLE_NAME = key_column_usage.TABLE_NAME
 AND table_constraints.CONSTRAINT_NAME = key_column_usage.CONSTRAINT_NAME
 AND columns.COLUMN_NAME = key_column_usage.COLUMN_NAME",2,"0,1"
-CONSTRAINT_SCHEMA,,table_constraints.CONSTRAINT_SCHEMA,,table_constraints.table_constraints.CONSTRAINT_SCHEMA,INFORMATION_SCHEMA,table_constraints,"LEFT JOIN 
+CONSTRAINT_SCHEMA,,table_constraints.CONSTRAINT_SCHEMA,,table_constraints.table_constraints.CONSTRAINT_SCHEMA,,,INFORMATION_SCHEMA,table_constraints,"LEFT JOIN 
 INFORMATION_SCHEMA.table_constraints
 ON
 tables.TABLE_CATALOG = table_constraints.TABLE_CATALOG
@@ -168,7 +168,7 @@ AND table_constraints.TABLE_SCHEMA = key_column_usage.TABLE_SCHEMA
 AND table_constraints.TABLE_NAME = key_column_usage.TABLE_NAME
 AND table_constraints.CONSTRAINT_NAME = key_column_usage.CONSTRAINT_NAME
 AND columns.COLUMN_NAME = key_column_usage.COLUMN_NAME",2,"0,1"
-CONSTRAINT_NAME,,table_constraints.CONSTRAINT_NAME,,table_constraints.table_constraints.CONSTRAINT_NAME,INFORMATION_SCHEMA,table_constraints,"LEFT JOIN 
+CONSTRAINT_NAME,,table_constraints.CONSTRAINT_NAME,,table_constraints.table_constraints.CONSTRAINT_NAME,,,INFORMATION_SCHEMA,table_constraints,"LEFT JOIN 
 INFORMATION_SCHEMA.table_constraints
 ON
 tables.TABLE_CATALOG = table_constraints.TABLE_CATALOG
@@ -182,7 +182,7 @@ AND table_constraints.TABLE_SCHEMA = key_column_usage.TABLE_SCHEMA
 AND table_constraints.TABLE_NAME = key_column_usage.TABLE_NAME
 AND table_constraints.CONSTRAINT_NAME = key_column_usage.CONSTRAINT_NAME
 AND columns.COLUMN_NAME = key_column_usage.COLUMN_NAME",2,"0,1"
-CONSTRAINT_TYPE,,table_constraints.CONSTRAINT_TYPE,,table_constraints.table_constraints.CONSTRAINT_TYPE,INFORMATION_SCHEMA,table_constraints,"LEFT JOIN 
+CONSTRAINT_TYPE,,table_constraints.CONSTRAINT_TYPE,,table_constraints.table_constraints.CONSTRAINT_TYPE,,,INFORMATION_SCHEMA,table_constraints,"LEFT JOIN 
 INFORMATION_SCHEMA.table_constraints
 ON
 tables.TABLE_CATALOG = table_constraints.TABLE_CATALOG
@@ -196,7 +196,7 @@ AND table_constraints.TABLE_SCHEMA = key_column_usage.TABLE_SCHEMA
 AND table_constraints.TABLE_NAME = key_column_usage.TABLE_NAME
 AND table_constraints.CONSTRAINT_NAME = key_column_usage.CONSTRAINT_NAME
 AND columns.COLUMN_NAME = key_column_usage.COLUMN_NAME",2,"0,1"
-IS_DEFERRABLE,,table_constraints.IS_DEFERRABLE,,table_constraints.table_constraints.IS_DEFERRABLE,INFORMATION_SCHEMA,table_constraints,"LEFT JOIN 
+IS_DEFERRABLE,,table_constraints.IS_DEFERRABLE,,table_constraints.table_constraints.IS_DEFERRABLE,,,INFORMATION_SCHEMA,table_constraints,"LEFT JOIN 
 INFORMATION_SCHEMA.table_constraints
 ON
 tables.TABLE_CATALOG = table_constraints.TABLE_CATALOG
@@ -210,7 +210,7 @@ AND table_constraints.TABLE_SCHEMA = key_column_usage.TABLE_SCHEMA
 AND table_constraints.TABLE_NAME = key_column_usage.TABLE_NAME
 AND table_constraints.CONSTRAINT_NAME = key_column_usage.CONSTRAINT_NAME
 AND columns.COLUMN_NAME = key_column_usage.COLUMN_NAME",2,"0,1"
-INITIALLY_DEFERRED,,table_constraints.INITIALLY_DEFERRED,,table_constraints.table_constraints.INITIALLY_DEFERRED,INFORMATION_SCHEMA,table_constraints,"LEFT JOIN 
+INITIALLY_DEFERRED,,table_constraints.INITIALLY_DEFERRED,,table_constraints.table_constraints.INITIALLY_DEFERRED,,,INFORMATION_SCHEMA,table_constraints,"LEFT JOIN 
 INFORMATION_SCHEMA.table_constraints
 ON
 tables.TABLE_CATALOG = table_constraints.TABLE_CATALOG
